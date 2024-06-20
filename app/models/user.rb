@@ -136,7 +136,7 @@ class User < ApplicationRecord
   #   return matching_follow_requests
   # end
 
-  has_many(:accepted_received_follow_requests, -> {where status: "accepted"}, class_name:"FollowRequest", foreign_key: :recipient_id)
+  has_many(:accepted_sent_follow_requests, -> {where status: "accepted"}, class_name:"FollowRequest", foreign_key: :sender_id)
 
   # def accepted_sent_follow_requests
   #   my_sent_follow_requests = self.sent_follow_requests
@@ -146,6 +146,7 @@ class User < ApplicationRecord
   #   return matching_follow_requests
   # end
 
+  has_many(:accepted_received_follow_requests, -> {where status: "accepted"}, class_name: "FollowRequest", foreign_key: :sender_id)
   # def accepted_received_follow_requests
   #   my_received_follow_requests = self.received_follow_requests
 
@@ -154,7 +155,9 @@ class User < ApplicationRecord
   #   return matching_follow_requests
   # end
 
+  has_many(:liked_photos, through: :likes, source: :photo)
 
+  has_many(:commented_photos, through: :comments, source: :photo)
   has_many(:followers, through: :accepted_received_follow_requests, source: :sender)
   # def followers
   #   my_accepted_received_follow_requests = self.accepted_received_follow_requests
